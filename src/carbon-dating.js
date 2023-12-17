@@ -21,18 +21,16 @@ function dateSample(sampleActivity) {
   const MODERN_ACTIVITY = 15;
   const HALF_LIFE_PERIOD = 5730;
 
-  if (isNaN(sampleActivity) || sampleActivity <= 0) {
-      return false;
-  }
-  if (sampleActivity !== "string") {
+  if (typeof sampleActivity !== 'string' || isNaN(parseFloat(sampleActivity)) || parseFloat(sampleActivity) <= 0 || parseFloat(sampleActivity) > MODERN_ACTIVITY) {
     return false;
-  }
-  if (sampleActivity > 10) {
-    return false;}
-
-
-  const age = Math.ceil(Math.log(MODERN_ACTIVITY / sampleActivity) / (0.693 / HALF_LIFE_PERIOD));
-  return age;
+   }
+  
+   const sampleActivityFloat = parseFloat(sampleActivity);
+   const p = sampleActivityFloat / MODERN_ACTIVITY;
+   const n = Math.log(1 / p) / Math.log(2);
+   const age = HALF_LIFE_PERIOD * n;
+  
+   return Math.ceil(age);
 }
 
 module.exports = {
